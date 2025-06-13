@@ -12,21 +12,30 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
+import { UserRole } from '@/types/user.types';
 
 export default function StaffDashboardPage() {
   const { user, logout, isLoading, isAuthenticated } = useAuth();
   const router = useRouter();
 
   React.useEffect(() => {
-    if (!isLoading && !isAuthenticated && typeof window !== 'undefined') {
-      // Only redirect to login if user directly accessed this page without authentication
-      // Avoid redirecting during logout process
-      const currentPath = window.location.pathname;
-      if (currentPath === '/staff/dashboard') {
-        router.push('/');
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        router.push('/login');
+      } else if (user?.role !== UserRole.STAFF) {
+        router.push('/unauthorized'); // Redirect to unauthorized page
       }
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, user, router]);
+
+  // Render a loading state or null while checking auth to prevent flash of content
+  if (isLoading || !user || user.role !== UserRole.STAFF) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+        <p>Loading...</p> 
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">

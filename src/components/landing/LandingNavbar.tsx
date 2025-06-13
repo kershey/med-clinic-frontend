@@ -110,14 +110,14 @@ const LandingNavbar = () => {
               <Button
                 onClick={handleDashboardRedirect}
                 variant="outline"
-                className="border-blue-500 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/50"
+                className="border-blue-500 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/50 cursor-pointer"
               >
                 Dashboard
               </Button>
               <Button
                 onClick={() => logout()}
                 variant="ghost"
-                className="hover:bg-blue-50 dark:hover:bg-blue-900/50"
+                className="hover:bg-blue-50 dark:hover:bg-blue-900/50 cursor-pointer"
               >
                 Logout
               </Button>
@@ -129,7 +129,7 @@ const LandingNavbar = () => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="hover:bg-blue-50 dark:hover:bg-blue-900/50 flex items-center"
+                    className="hover:bg-blue-50 dark:hover:bg-blue-900/50 flex items-center cursor-pointer"
                   >
                     Login <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
@@ -163,7 +163,7 @@ const LandingNavbar = () => {
               {/* Register Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 flex items-center">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 flex items-center cursor-pointer">
                     Register <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -243,7 +243,7 @@ const LandingNavbar = () => {
                         setIsMobileMenuOpen(false);
                       }}
                       variant="outline"
-                      className="w-full border-blue-500 text-blue-600"
+                      className="w-full border-blue-500 text-blue-600 cursor-pointer"
                     >
                       Dashboard
                     </Button>
@@ -253,7 +253,7 @@ const LandingNavbar = () => {
                         setIsMobileMenuOpen(false);
                       }}
                       variant="ghost"
-                      className="w-full"
+                      className="w-full cursor-pointer"
                     >
                       Logout
                     </Button>
@@ -265,7 +265,7 @@ const LandingNavbar = () => {
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="outline"
-                          className="w-full flex items-center justify-between"
+                          className="w-full flex items-center justify-between cursor-pointer"
                         >
                           Login <ChevronDown className="ml-1 h-4 w-4" />
                         </Button>
@@ -305,7 +305,7 @@ const LandingNavbar = () => {
                     {/* Mobile Register Dropdown */}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 flex items-center justify-between">
+                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 flex items-center justify-between cursor-pointer">
                           Register <ChevronDown className="ml-1 h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>

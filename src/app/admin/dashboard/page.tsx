@@ -13,22 +13,32 @@ import {
 } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'; // For admin-specific links
+import { UserRole } from '@/types/user.types';
 
 export default function AdminDashboardPage() {
   const { user, logout, isLoading, isAuthenticated } = useAuth();
   const router = useRouter();
 
   React.useEffect(() => {
-    if (!isLoading && !isAuthenticated && typeof window !== 'undefined') {
-      // Only redirect to login if user directly accessed this page without authentication
-      // Avoid redirecting during logout process
-      const currentPath = window.location.pathname;
-      if (currentPath === '/admin/dashboard') {
-        router.push('/');
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        router.push('/login');
+      } else if (user?.role !== UserRole.ADMIN) {
+        router.push('/unauthorized'); // Redirect to unauthorized page
       }
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, user, router]);
 
+  // Render a loading state or null while checking auth to prevent flash of content
+  if (isLoading || !user || user.role !== UserRole.ADMIN) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+        <p>Loading...</p> {/* Or a more sophisticated loading spinner */}
+      </div>
+    );
+  }
+
+  // If loading is false, user is authenticated, and role is ADMIN, render the dashboard
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-lg">

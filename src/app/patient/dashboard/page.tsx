@@ -14,31 +14,37 @@ import {
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  CalendarPlus,
   ListChecks,
-  FileTextIcon,
-  UserCog,
   LogOut,
-  BriefcaseMedical, // For "Medical Records"
-  Settings2, // For "Manage Profile"
-  NotebookPen, // For "My Appointments"
-  PlusCircle, // For "Book New Appointment"
+  BriefcaseMedical,
+  Settings2,
+  NotebookPen,
+  PlusCircle,
 } from 'lucide-react';
+import { UserRole } from '@/types/user.types';
 
 export default function PatientDashboardPage() {
   const { user, logout, isLoading, isAuthenticated } = useAuth();
   const router = useRouter();
 
   React.useEffect(() => {
-    if (!isLoading && !isAuthenticated && typeof window !== 'undefined') {
-      // Only redirect to login if user directly accessed this page without authentication
-      // Avoid redirecting during logout process
-      const currentPath = window.location.pathname;
-      if (currentPath === '/patient/dashboard') {
-        router.push('/');
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        router.push('/login');
+      } else if (user?.role !== UserRole.PATIENT) {
+        router.push('/unauthorized'); // Redirect to unauthorized page
       }
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, user, router]);
+
+  // Render a loading state or null while checking auth to prevent flash of content
+  if (isLoading || !user || user.role !== UserRole.PATIENT) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   const quickActions = [
     {
