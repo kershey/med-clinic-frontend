@@ -85,24 +85,49 @@ export default function DoctorRegistrationPage() {
     },
   });
 
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(
+    null
+  );
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        toast.error('Invalid image type. Only jpg, png, webp allowed.');
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error('Image too large. Max 2MB allowed.');
+        return;
+      }
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
+    }
+  }
+
   async function onSubmit(data: DoctorRegistrationFormValues) {
     setIsSubmitting(true);
     setApiError(null);
     try {
       const { confirmPassword, first_name, last_name, ...restOfData } = data;
-      const payload: DoctorRegistrationPayload = {
-        ...restOfData,
-        full_name: `${first_name} ${last_name}`,
-        contact: data.contact || null,
-        gender: data.gender || null,
-        address: data.address || null,
-        bio: data.bio || null,
-      };
-      await registerDoctor(payload);
+      const formData = new FormData();
+      formData.append('email', data.email);
+      formData.append('password', data.password);
+      formData.append('full_name', `${first_name} ${last_name}`);
+      formData.append('specialization', data.specialization);
+      formData.append('bio', data.bio || '');
+      formData.append('gender', data.gender || '');
+      formData.append('contact', data.contact || '');
+      formData.append('address', data.address || '');
+      if (profileImage) {
+        formData.append('profile_image', profileImage);
+      }
+      await registerDoctor(formData);
       toast.success(
         'Doctor registration successful! Your account will be reviewed by an admin. You will be notified upon approval.'
       );
-      
+
       // Add delay to allow user to see the success toast
       setTimeout(() => {
         router.push('/auth/login');
@@ -121,6 +146,8 @@ export default function DoctorRegistrationPage() {
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
+        {/* Avatar Upload at the Top */}
+
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center space-x-2 mb-2">
             <Stethoscope className="h-10 w-10 text-blue-600 dark:text-blue-400" />
@@ -149,6 +176,58 @@ export default function DoctorRegistrationPage() {
               .
             </CardDescription>
           </CardHeader>
+          {/* Avatar Upload just above the form fields */}
+          <div className="flex flex-col items-center w-full mb-6 mt-2">
+            <div className="relative flex flex-col items-center w-full mb-2">
+              <div className="bg-white rounded-full shadow-lg border-4 border-blue-200 w-32 h-32 flex items-center justify-center transition-transform hover:scale-105 focus-within:scale-105">
+                {profileImagePreview ? (
+                  <img
+                    src={profileImagePreview}
+                    alt="Profile Preview"
+                    className="rounded-full w-32 h-32 object-cover"
+                  />
+                ) : (
+                  <svg
+                    className="w-16 h-16 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                    />
+                  </svg>
+                )}
+                <input
+                  type="file"
+                  id="profile_image"
+                  name="profile_image"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleImageChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  aria-label="Upload profile image"
+                  tabIndex={0}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  document.getElementById('profile_image')?.click()
+                }
+                className="mt-3 px-6 py-2 bg-blue-700 text-white rounded-full shadow hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 font-semibold transition"
+                aria-label="Add or change profile image"
+              >
+                {profileImagePreview ? 'Change Image' : 'Add Image'}
+              </button>
+              <span className="text-xs text-gray-500 mt-1">
+                Click avatar to upload/change
+              </span>
+            </div>
+          </div>
           <CardContent className="pt-6">
             <Form {...form}>
               <form

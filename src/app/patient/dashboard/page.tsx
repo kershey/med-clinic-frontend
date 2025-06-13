@@ -30,7 +30,7 @@ export default function PatientDashboardPage() {
   React.useEffect(() => {
     if (!isLoading) {
       if (!isAuthenticated) {
-        router.push('/login');
+        router.push('/');
       } else if (user?.role !== UserRole.PATIENT) {
         router.push('/unauthorized'); // Redirect to unauthorized page
       }

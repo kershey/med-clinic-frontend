@@ -21,7 +21,7 @@ export default function DoctorDashboardPage() {
   React.useEffect(() => {
     if (!isLoading) {
       if (!isAuthenticated) {
-        router.push('/login');
+        router.push('/');
       } else if (user?.role !== UserRole.DOCTOR) {
         router.push('/unauthorized'); // Redirect to unauthorized page
       }
@@ -32,13 +32,14 @@ export default function DoctorDashboardPage() {
   if (isLoading || !user || user.role !== UserRole.DOCTOR) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
-        <p>Loading...</p> 
+        <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+      <div className="flex flex-col items-center justify-center w-full">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Doctor Dashboard</CardTitle>
@@ -67,7 +68,11 @@ export default function DoctorDashboardPage() {
           </div>
         </CardContent>
         <CardFooter className="flex justify-end">
-          <Button onClick={() => logout()} variant="outline">
+          <Button
+            onClick={() => logout()}
+            variant="outline"
+            className=" cursor-pointer"
+          >
             Logout
           </Button>
         </CardFooter>

@@ -43,6 +43,12 @@ const ROLES = [
     IconLogin: UserCircle,
     IconRegister: UserPlus,
   }, // Example, adjust icon
+  {
+    name: 'Admin',
+    path: 'admin',
+    IconLogin: ShieldCheck,
+    IconRegister: ShieldPlus,
+  },
 ];
 
 const LandingNavbar = () => {
@@ -149,14 +155,6 @@ const LandingNavbar = () => {
                       </DropdownMenuItem>
                     </Link>
                   ))}
-                  <Link href="/auth/login/admin" passHref>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700 p-2 flex items-center">
-                      <ShieldCheck className="mr-2 h-4 w-4 text-slate-500 dark:text-slate-400" />
-                      <span className="text-sm text-slate-700 dark:text-slate-200">
-                        Admin Login
-                      </span>
-                    </DropdownMenuItem>
-                  </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
 
@@ -184,14 +182,6 @@ const LandingNavbar = () => {
                   ))}
                   {/* Admin registration often requires a different flow or is restricted */}
                   {/* For now, adding it similarly. Consider if this flow is appropriate. */}
-                  <Link href="/auth/register/admin" passHref>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700 p-2 flex items-center">
-                      <ShieldPlus className="mr-2 h-4 w-4 text-slate-500 dark:text-slate-400" />
-                      <span className="text-sm text-slate-700 dark:text-slate-200">
-                        Admin Registration
-                      </span>
-                    </DropdownMenuItem>
-                  </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
             </>
@@ -288,17 +278,6 @@ const LandingNavbar = () => {
                             </DropdownMenuItem>
                           </Link>
                         ))}
-                        <Link href="/auth/login/admin" passHref>
-                          <DropdownMenuItem
-                            className="cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700 p-2 flex items-center"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            <ShieldCheck className="mr-2 h-4 w-4 text-slate-500 dark:text-slate-400" />
-                            <span className="text-sm text-slate-700 dark:text-slate-200">
-                              Admin Login
-                            </span>
-                          </DropdownMenuItem>
-                        </Link>
                       </DropdownMenuContent>
                     </DropdownMenu>
 
@@ -327,17 +306,6 @@ const LandingNavbar = () => {
                             </DropdownMenuItem>
                           </Link>
                         ))}
-                        <Link href="/auth/register/admin" passHref>
-                          <DropdownMenuItem
-                            className="cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-700 p-2 flex items-center"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            <ShieldPlus className="mr-2 h-4 w-4 text-slate-500 dark:text-slate-400" />
-                            <span className="text-sm text-slate-700 dark:text-slate-200">
-                              Admin Registration
-                            </span>
-                          </DropdownMenuItem>
-                        </Link>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </>
