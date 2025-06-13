@@ -22,6 +22,7 @@ import {
   PlusCircle,
 } from 'lucide-react';
 import { UserRole } from '@/types/user.types';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 export default function PatientDashboardPage() {
   const { user, logout, isLoading, isAuthenticated } = useAuth();
@@ -74,33 +75,34 @@ export default function PatientDashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-sky-100 dark:from-slate-900 dark:to-sky-800 p-4 md:p-8">
-      <div className="max-w-5xl mx-auto space-y-8">
+    <DashboardLayout>
+      <div className="p-6 md:p-8 space-y-8">
         {/* Welcome Section */}
-        <Card className="shadow-lg">
-          <CardHeader>
+        <Card className="shadow-lg border-0 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950">
+          <CardHeader className="pb-6">
             <CardTitle className="text-3xl font-bold text-slate-800 dark:text-slate-100">
               Welcome back, {user?.full_name || user?.email || 'Patient'}!
             </CardTitle>
             <CardDescription className="text-slate-600 dark:text-slate-300 text-base">
-              Here's an overview of your patient portal. Manage your health with
-              ease.
+              Here's an overview of your patient portal. Manage your health with ease.
             </CardDescription>
           </CardHeader>
         </Card>
 
         {/* Quick Actions Grid */}
         <div>
-          <h2 className="text-2xl font-semibold mb-4 text-slate-700 dark:text-slate-200">
+          <h2 className="text-2xl font-semibold mb-6 text-slate-700 dark:text-slate-200">
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {quickActions.map((action) => (
               <Link href={action.href} key={action.title} passHref>
-                <Card className="hover:shadow-xl transition-shadow duration-300 ease-in-out h-full flex flex-col cursor-pointer bg-white dark:bg-slate-800">
+                <Card className="group hover:shadow-xl transition-all duration-300 ease-in-out h-full flex flex-col cursor-pointer bg-white dark:bg-slate-800 border-0 shadow-lg hover:-translate-y-1">
                   <CardHeader className="flex flex-row items-center space-x-3 pb-3">
-                    <action.icon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                    <CardTitle className="text-xl text-slate-700 dark:text-slate-100">
+                    <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                      <action.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <CardTitle className="text-lg text-slate-700 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {action.title}
                     </CardTitle>
                   </CardHeader>
@@ -116,63 +118,33 @@ export default function PatientDashboardPage() {
         </div>
 
         {/* Upcoming Appointments Section */}
-        <Card className="shadow-md">
+        <Card className="shadow-lg border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-slate-700 dark:text-slate-200">
               Upcoming Appointments
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {/* Placeholder - Replace with actual appointment list later */}
-            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-              <ListChecks className="w-12 h-12 mx-auto mb-2 text-slate-400 dark:text-slate-500" />
-              <p>You have no upcoming appointments.</p>
-              <p className="text-sm mt-1">
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+              <div className="p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-20 h-20 mx-auto mb-4">
+                <ListChecks className="w-12 h-12 text-white" />
+              </div>
+              <p className="text-lg font-medium mb-2">You have no upcoming appointments.</p>
+              <p className="text-sm">
                 Book a new appointment to see it listed here.
               </p>
             </div>
-            <div className="mt-4 flex justify-end">
+            <div className="mt-6 flex justify-center">
               <Button
                 asChild
-                variant="default"
-                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8"
               >
                 <Link href="/patient/appointments">View All Appointments</Link>
               </Button>
             </div>
           </CardContent>
         </Card>
-
-        {/* User Info & Logout Section */}
-        <Card className="shadow-md">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-slate-700 dark:text-slate-200">
-              Account Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-            <p>
-              <strong>Email:</strong> {user?.email}
-            </p>
-            <p>
-              <strong>Role:</strong> {user?.role}
-            </p>
-            <p>
-              <strong>Account Status:</strong> {user?.account_status}
-            </p>
-          </CardContent>
-          <CardFooter className="border-t pt-4 dark:border-slate-700">
-            <Button
-              onClick={() => logout()}
-              variant="outline"
-              className="w-full sm:w-auto dark:text-slate-200 dark:border-slate-600 dark:hover:bg-slate-700 cursor-pointer"
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              Logout
-            </Button>
-          </CardFooter>
-        </Card>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }
