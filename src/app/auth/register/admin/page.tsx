@@ -26,7 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Toaster as SonnerToaster, toast } from "sonner";
+import { toast } from "sonner";
 import { registerAdmin } from "@/services/auth.service";
 import { AdminRegistrationPayload } from "@/types/auth.types";
 import Link from "next/link";
@@ -102,23 +102,25 @@ export default function AdminRegistrationPage() {
       toast.success(
         "Admin registration request submitted! Your application will be reviewed. You will be notified upon approval."
       );
-      // Redirect to a confirmation page or login, but inform that approval is needed.
-      // For now, redirect to login, but the user won't be able to login until approved.
-      router.push("/auth/login/admin"); 
+      
+      // Add delay to allow user to see the success toast
+      setTimeout(() => {
+        // Redirect to a confirmation page or login, but inform that approval is needed.
+        // For now, redirect to login, but the user won't be able to login until approved.
+        router.push("/auth/login/admin");
+        setIsSubmitting(false); // Set loading false after navigation
+      }, 3000); // 3 second delay for admin registration (longer message) 
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.detail ||
         "Admin registration request failed. Please try again.";
       setApiError(errorMessage);
       toast.error(errorMessage);
-    } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); // Set loading false on error
     }
   }
 
   return (
-    <>
-      <SonnerToaster position="bottom-right" richColors />
       <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center space-x-2 mb-2">
@@ -311,6 +313,5 @@ export default function AdminRegistrationPage() {
           </CardFooter>
         </Card>
       </div>
-    </>
   );
 }

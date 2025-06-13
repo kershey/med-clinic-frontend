@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -49,21 +49,11 @@ export default function PatientLoginPage() {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
-      toast.info('Already logged in. Redirecting...');
-      // AuthContext handles role-based redirection, so this could be simplified or removed
-      // if AuthContext's redirection is comprehensive and triggers on user state change.
-      // Keeping it for now as a direct navigation attempt.
-      if (user.role === 'ADMIN') {
-        router.push('/admin/dashboard');
-      } else if (user.role === 'DOCTOR') {
-        router.push('/doctor/dashboard');
-      } else if (user.role === 'STAFF') {
-        router.push('/staff/dashboard');
-      } else {
+      setTimeout(() => {
         router.push('/patient/dashboard');
-      }
+      }, 1000);
     }
   }, [user, router]);
 
@@ -145,7 +135,7 @@ export default function PatientLoginPage() {
                             type="button"
                             variant="ghost"
                             size="sm"
-                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer"
                             onClick={() => setShowPassword(!showPassword)}
                           >
                             {showPassword ? 'Hide' : 'Show'}
@@ -158,7 +148,7 @@ export default function PatientLoginPage() {
                 />
                 <Button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
                   disabled={isLoading}
                 >
                   {isLoading ? 'Logging in...' : 'Login as Patient'}

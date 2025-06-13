@@ -95,23 +95,26 @@ export default function PatientRegistrationPage() {
       toast.success(
         "Registration successful! Please check your email to verify your account."
       );
-      router.push('/auth/login');
+      
+      // Add delay to allow user to see the success toast
+      setTimeout(() => {
+        router.push('/auth/login');
+        setIsSubmitting(false); // Set loading false after navigation
+      }, 2500); // 2.5 second delay for registration (longer message)
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.detail ||
         'Registration failed. Please try again.';
       setApiError(errorMessage);
       toast.error(errorMessage);
+      setIsSubmitting(false); // Set loading false on error
       // Log the full error for debugging if needed
       // console.error("Registration error:", error.response?.data || error.message);
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
   return (
     <>
-      <SonnerToaster position="bottom-right" richColors />
       <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center space-x-2 mb-2">

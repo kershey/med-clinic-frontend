@@ -137,7 +137,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const data = await apiLoginUser(payload);
       handleAuthResponse(data);
-      router.push(getRedirectPath(data.user.role)); // Redirect based on actual user role from response
+      toast.success('Login successful!');
+
+      // Add second toast after a short delay to show loading dashboard
+      // setTimeout(() => {
+      //   toast.loading('Loading dashboard...');
+      // }, 800);
+
+      // Add delay to allow user to see the success toast
+      setTimeout(() => {
+        router.push(getRedirectPath(data.user.role)); // Redirect based on actual user role from response
+        setIsLoading(false); // Set loading false after navigation
+      }, 1500); // 1.5 second delay
     } catch (err: any) {
       clearAuthData();
       const errorMessage =
@@ -146,9 +157,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         'Login failed. Please check your credentials.';
       toast.error(errorMessage);
       console.error('Login error:', err.response || err);
+      setIsLoading(false); // Set loading false on error
       throw err; // Re-throw for form error handling
-    } finally {
-      setIsLoading(false);
     }
   };
 

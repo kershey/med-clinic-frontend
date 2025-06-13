@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Stethoscope } from "lucide-react"; // Import Stethoscope
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Button } from '@/components/ui/button';
+import { Stethoscope } from 'lucide-react'; // Import Stethoscope
 import {
   Card,
   CardContent,
@@ -14,8 +14,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -23,52 +23,45 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Toaster as SonnerToaster, toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
-import Link from "next/link";
+} from '@/components/ui/form';
+import { Toaster as SonnerToaster, toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
+import Link from 'next/link';
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email address." }),
-  password: z.string().min(1, { message: "Password is required." }),
+  email: z.string().email({ message: 'Invalid email address.' }),
+  password: z.string().min(1, { message: 'Password is required.' }),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-export default function AdminLoginPage() { // Renamed component
+export default function AdminLoginPage() {
+  // Renamed component
   const router = useRouter();
-  const { login, isLoading, error: authError, user } = useAuth(); 
+  const { login, isLoading, error: authError, user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
-      toast.info("Already logged in. Redirecting...");
-      if (user.role === "ADMIN") {
-        router.push("/admin/dashboard");
-      } else if (user.role === "DOCTOR") {
-        router.push("/doctor/dashboard");
-      } else if (user.role === "STAFF") {
-        router.push("/staff/dashboard");
-      } else {
-        router.push("/patient/dashboard");
-      }
+      setTimeout(() => {
+        router.push('/admin/dashboard');
+      }, 1000);
     }
   }, [user, router]);
-
 
   async function onSubmit(data: LoginFormValues) {
     try {
       await login({ email: data.email, password: data.password });
     } catch (error) {
-      console.error("Admin login page submit error:", error);
+      console.error('Admin login page submit error:', error);
     }
   }
 
@@ -79,20 +72,30 @@ export default function AdminLoginPage() { // Renamed component
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center space-x-2 mb-2">
             <Stethoscope className="h-10 w-10 text-blue-600 dark:text-blue-400" />
-            <span className="font-bold text-3xl text-slate-800 dark:text-slate-100">MediConnect</span>
+            <span className="font-bold text-3xl text-slate-800 dark:text-slate-100">
+              MediConnect
+            </span>
           </Link>
-          <p className="text-sm text-muted-foreground">Your seamless connection to healthcare.</p>
+          <p className="text-sm text-muted-foreground">
+            Your seamless connection to healthcare.
+          </p>
         </div>
         <Card className="w-full max-w-md shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">Administrator Login</CardTitle>
+            <CardTitle className="text-2xl font-bold">
+              Administrator Login
+            </CardTitle>
             <CardDescription>
-              Access the system administration panel. Please use your provided credentials.
+              Access the system administration panel. Please use your provided
+              credentials.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 <FormField
                   control={form.control}
                   name="email"
@@ -119,7 +122,7 @@ export default function AdminLoginPage() { // Renamed component
                       <FormControl>
                         <div className="relative">
                           <Input
-                            type={showPassword ? "text" : "password"}
+                            type={showPassword ? 'text' : 'password'}
                             placeholder="********"
                             {...field}
                           />
@@ -127,10 +130,10 @@ export default function AdminLoginPage() { // Renamed component
                             type="button"
                             variant="ghost"
                             size="sm"
-                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer"
                             onClick={() => setShowPassword(!showPassword)}
                           >
-                            {showPassword ? "Hide" : "Show"}
+                            {showPassword ? 'Hide' : 'Show'}
                           </Button>
                         </div>
                       </FormControl>
@@ -143,24 +146,47 @@ export default function AdminLoginPage() { // Renamed component
                     {authError}
                   </p>
                 )}
-                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600" disabled={isLoading}>
-                  {isLoading ? "Logging in..." : "Login as Admin"}
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Logging in...' : 'Login as Admin'}
                 </Button>
               </form>
             </Form>
           </CardContent>
           <CardFooter className="flex flex-col items-center space-y-2 pt-6">
-             <Link
-                href="/auth/forgot-password"
-                className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
-              >
-                Forgot Password?
-              </Link>
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              Forgot Password?
+            </Link>
             <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4">
-                <span>Switch role: </span>
-                <Link href="/auth/login/patient" className="hover:underline text-blue-600 dark:text-blue-400">Patient</Link> |
-                <Link href="/auth/login/doctor" className="hover:underline text-blue-600 dark:text-blue-400"> Doctor</Link> | 
-                <Link href="/auth/login/staff" className="hover:underline text-blue-600 dark:text-blue-400"> Staff</Link>
+              <span>Switch role: </span>
+              <Link
+                href="/auth/login/patient"
+                className="hover:underline text-blue-600 dark:text-blue-400"
+              >
+                Patient
+              </Link>{' '}
+              |
+              <Link
+                href="/auth/login/doctor"
+                className="hover:underline text-blue-600 dark:text-blue-400"
+              >
+                {' '}
+                Doctor
+              </Link>{' '}
+              |
+              <Link
+                href="/auth/login/staff"
+                className="hover:underline text-blue-600 dark:text-blue-400"
+              >
+                {' '}
+                Staff
+              </Link>
             </p>
           </CardFooter>
         </Card>

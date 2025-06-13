@@ -40,37 +40,6 @@ export default function PatientDashboardPage() {
     }
   }, [isLoading, isAuthenticated, router]);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
-        <p className="text-lg text-slate-600 dark:text-slate-300">
-          Loading dashboard...
-        </p>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
-        <p className="text-lg text-slate-500 dark:text-slate-400">
-          Redirecting to login...
-        </p>
-      </div>
-    );
-  }
-
-  if (user.role !== 'PATIENT') {
-    logout(); // Log out if they are on the wrong dashboard
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
-        <p className="text-lg text-red-600 dark:text-red-400">
-          Access denied. This dashboard is for patients only. Redirecting...
-        </p>
-      </div>
-    );
-  }
-
   const quickActions = [
     {
       title: 'Book New Appointment',
@@ -190,7 +159,7 @@ export default function PatientDashboardPage() {
             <Button
               onClick={() => logout()}
               variant="outline"
-              className="w-full sm:w-auto dark:text-slate-200 dark:border-slate-600 dark:hover:bg-slate-700"
+              className="w-full sm:w-auto dark:text-slate-200 dark:border-slate-600 dark:hover:bg-slate-700 cursor-pointer"
             >
               <LogOut className="mr-2 h-4 w-4" />
               Logout

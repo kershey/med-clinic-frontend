@@ -28,31 +28,6 @@ export default function DoctorDashboardPage() {
     }
   }, [isLoading, isAuthenticated, router]);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Loading dashboard...</p>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Redirecting to login...</p>
-      </div>
-    );
-  }
-
-  if (user.role !== 'DOCTOR') {
-    logout(); // Log out if they are on the wrong dashboard
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Access denied. Redirecting...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-lg">
@@ -72,10 +47,12 @@ export default function DoctorDashboardPage() {
             <p>Email: {user?.email}</p>
             <p>Role: {user?.role}</p>
             <p>Account Status: {user?.account_status}</p>
-            {user.doctor_specifics && (
+            {user?.doctor_specifics && (
               <>
-                <p>Specialization: {user.doctor_specifics.specialization}</p>
-                <p>Availability: {user.doctor_specifics.availability_status}</p>
+                <p>Specialization: {user?.doctor_specifics?.specialization}</p>
+                <p>
+                  Availability: {user?.doctor_specifics?.availability_status}
+                </p>
               </>
             )}
           </div>

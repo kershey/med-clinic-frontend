@@ -102,21 +102,24 @@ export default function DoctorRegistrationPage() {
       toast.success(
         'Doctor registration successful! Your account will be reviewed by an admin. You will be notified upon approval.'
       );
-      router.push('/auth/login');
+      
+      // Add delay to allow user to see the success toast
+      setTimeout(() => {
+        router.push('/auth/login');
+        setIsSubmitting(false); // Set loading false after navigation
+      }, 3000); // 3 second delay for doctor registration (longer message)
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.detail ||
         'Registration failed. Please try again.';
       setApiError(errorMessage);
       toast.error(errorMessage);
-    } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); // Set loading false on error
     }
   }
 
   return (
     <>
-      <SonnerToaster position="top-right" richColors />
       <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center space-x-2 mb-2">
