@@ -68,7 +68,7 @@ export default function PatientDashboardPage() {
     },
     {
       title: 'Manage Profile',
-      href: '/patient/profile',
+      href: '/patient/dashboard/settings',
       icon: Settings2,
       description: 'Update your personal information and preferences.',
     },

@@ -3,7 +3,7 @@ import axios, { AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
 // Determine the base URL for the API
 // It prioritizes the NEXT_PUBLIC_API_URL environment variable,
 // then falls back to a default for local development.
-const API_BASE_URL =
+export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
 /**

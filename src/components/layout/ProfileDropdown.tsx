@@ -41,6 +41,12 @@ export function ProfileDropdown({ className = '' }: ProfileDropdownProps) {
     router.push('/');
   };
 
+  const handleAccountSettings = () => {
+    if (!user || !user.role) return;
+    const rolePath = user.role.toLowerCase();
+    router.push(`/${rolePath}/dashboard/settings`);
+  };
+
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
@@ -92,7 +98,10 @@ export function ProfileDropdown({ className = '' }: ProfileDropdownProps) {
           className={`relative h-12 w-auto gap-3 rounded-full border border-gray-200 bg-white/80 backdrop-blur-sm px-4 py-2 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow-md dark:bg-gray-900/80 dark:border-gray-700 dark:hover:bg-gray-800 ${className}`}
         >
           <Avatar className="h-8 w-8 ring-2 ring-gray-200 dark:ring-gray-700">
-            <AvatarImage src={user?.avatarUrl} alt={user?.full_name || user?.email} />
+            <AvatarImage
+              src={user?.profile_image ?? undefined}
+              alt={user?.full_name || user?.email}
+            />
             <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold text-sm">
               {getInitials(user?.full_name || user?.email || 'U')}
             </AvatarFallback>
@@ -102,7 +111,12 @@ export function ProfileDropdown({ className = '' }: ProfileDropdownProps) {
               {user?.full_name || user?.email || 'User'}
             </span>
             <div className="flex items-center gap-2">
-              <Badge variant="secondary" className={`text-xs px-2 py-0.5 ${getRoleColor(user?.role || '')}`}>
+              <Badge
+                variant="secondary"
+                className={`text-xs px-2 py-0.5 ${getRoleColor(
+                  user?.role || ''
+                )}`}
+              >
                 {user?.role || 'User'}
               </Badge>
             </div>
@@ -110,15 +124,18 @@ export function ProfileDropdown({ className = '' }: ProfileDropdownProps) {
           <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        className="w-80 p-2 bg-white/95 backdrop-blur-lg border border-gray-200 dark:bg-gray-900/95 dark:border-gray-700" 
-        align="end" 
+      <DropdownMenuContent
+        className="w-80 p-2 bg-white/95 backdrop-blur-lg border border-gray-200 dark:bg-gray-900/95 dark:border-gray-700"
+        align="end"
         forceMount
       >
         <DropdownMenuLabel className="font-normal p-4 border-b border-gray-100 dark:border-gray-800">
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 ring-2 ring-gray-200 dark:ring-gray-700">
-              <AvatarImage src={user?.avatarUrl} alt={user?.full_name || user?.email} />
+              <AvatarImage
+                src={user?.profile_image ?? undefined}
+                alt={user?.full_name || user?.email}
+              />
               <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
                 {getInitials(user?.full_name || user?.email || 'U')}
               </AvatarFallback>
@@ -131,10 +148,18 @@ export function ProfileDropdown({ className = '' }: ProfileDropdownProps) {
                 {user?.email}
               </p>
               <div className="flex items-center gap-2 mt-1">
-                <Badge variant="secondary" className={`text-xs ${getRoleColor(user?.role || '')}`}>
+                <Badge
+                  variant="secondary"
+                  className={`text-xs ${getRoleColor(user?.role || '')}`}
+                >
                   {user?.role}
                 </Badge>
-                <Badge variant="secondary" className={`text-xs ${getStatusColor(user?.account_status || '')}`}>
+                <Badge
+                  variant="secondary"
+                  className={`text-xs ${getStatusColor(
+                    user?.account_status || ''
+                  )}`}
+                >
                   {user?.account_status?.replace('_', ' ')}
                 </Badge>
               </div>
@@ -145,21 +170,32 @@ export function ProfileDropdown({ className = '' }: ProfileDropdownProps) {
         <div className="py-2">
           <DropdownMenuItem className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
             <User className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-sm text-gray-700 dark:text-gray-300">View Profile</span>
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              View Profile
+            </span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+          <DropdownMenuItem
+            className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            onClick={handleAccountSettings}
+          >
             <Settings className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-sm text-gray-700 dark:text-gray-300">Account Settings</span>
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Account Settings
+            </span>
           </DropdownMenuItem>
 
           <DropdownMenuItem className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
             <Bell className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-sm text-gray-700 dark:text-gray-300">Notifications</span>
-            <Badge className="ml-auto bg-red-500 text-white text-xs px-2">3</Badge>
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Notifications
+            </span>
+            <Badge className="ml-auto bg-red-500 text-white text-xs px-2">
+              3
+            </Badge>
           </DropdownMenuItem>
 
-          <DropdownMenuItem 
+          <DropdownMenuItem
             className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             onClick={toggleTheme}
           >
@@ -175,13 +211,17 @@ export function ProfileDropdown({ className = '' }: ProfileDropdownProps) {
 
           <DropdownMenuItem className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
             <Palette className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-sm text-gray-700 dark:text-gray-300">Appearance</span>
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Appearance
+            </span>
           </DropdownMenuItem>
 
           {(user?.role === 'ADMIN' || user?.role === 'STAFF') && (
             <DropdownMenuItem className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
               <Shield className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-              <span className="text-sm text-gray-700 dark:text-gray-300">Admin Panel</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Admin Panel
+              </span>
             </DropdownMenuItem>
           )}
         </div>
@@ -191,10 +231,12 @@ export function ProfileDropdown({ className = '' }: ProfileDropdownProps) {
         <div className="py-2">
           <DropdownMenuItem className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
             <HelpCircle className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-sm text-gray-700 dark:text-gray-300">Help & Support</span>
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Help & Support
+            </span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem 
+          <DropdownMenuItem
             className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-red-600 dark:text-red-400"
             onClick={handleLogout}
           >

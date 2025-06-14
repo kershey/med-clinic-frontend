@@ -29,6 +29,7 @@ interface AuthContextType {
   logout: (role?: UserRole) => Promise<void>;
   clearError: () => void;
   checkAuth: () => Promise<void>; // Function to re-validate token/user
+  setUser: React.Dispatch<React.SetStateAction<AuthenticatedUser | null>>; // Expose setUser
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -96,21 +97,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (storedToken && storedUser) {
       setAccessToken(storedToken);
-      setUser(JSON.parse(storedUser));
+      setUser(JSON.parse(storedUser)); // Optimistically set user
       try {
         // Optionally re-fetch user profile to ensure data is fresh and token is valid
-        // const freshUser = await apiGetCurrentUserProfile();
-        // setUser(freshUser);
-        // localStorage.setItem('user', JSON.stringify(freshUser));
-        // console.log('User session restored and verified.');
+        const freshUser = await apiGetCurrentUserProfile(); // This uses the storedToken via the service's internal logic
+        setUser(freshUser);
+        localStorage.setItem('user', JSON.stringify(freshUser));
+        console.log('User session restored and verified.');
       } catch (e) {
         console.error(
-          'Session restore error, attempting refresh or clearing:',
+          'Session restore error (apiGetCurrentUserProfile failed), attempting refresh or clearing:',
           e
         );
         // Try to refresh token if profile fetch fails (indicates expired access token)
         try {
-          const refreshData = await apiRefreshToken();
+          const refreshData = await apiRefreshToken(); // This uses refreshToken from localStorage via service's internal logic
           handleAuthResponse(refreshData);
           console.log('Token refreshed successfully during auth check.');
         } catch (refreshError) {
@@ -118,7 +119,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             'Token refresh failed during auth check, clearing session:',
             refreshError
           );
-          clearAuthData();
+          clearAuthData(); // This will set user and token to null
         }
       }
     } else {
@@ -192,6 +193,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         logout,
         clearError,
         checkAuth,
+        setUser,
       }}
     >
       {children}

@@ -24,6 +24,7 @@ import {
   UserCheck,
   FileText,
   TrendingUp,
+  Settings // Added Settings icon
 } from 'lucide-react';
 
 export default function DoctorDashboardPage() {
@@ -91,6 +92,13 @@ export default function DoctorDashboardPage() {
       icon: TrendingUp,
       description: 'View your performance metrics and analytics.',
       stats: '95% satisfaction'
+    },
+    {
+      title: 'Account Settings',
+      href: '/doctor/dashboard/settings',
+      icon: Settings,
+      description: 'Manage your profile, specialization, and other settings.',
+      stats: 'Edit Profile'
     },
   ];
 

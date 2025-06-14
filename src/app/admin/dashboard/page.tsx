@@ -79,6 +79,13 @@ export default function AdminDashboardPage() {
       stats: 'Last backup: 2h ago'
     },
     {
+      title: 'My Profile',
+      href: '/admin/dashboard/settings',
+      icon: UserCheck, // Using UserCheck for personal profile settings
+      description: 'Manage your personal admin profile and preferences.',
+      stats: 'Edit Your Profile'
+    },
+    {
       title: 'System Settings',
       href: '/admin/settings',
       icon: Settings,

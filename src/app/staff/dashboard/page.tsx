@@ -26,6 +26,7 @@ import {
   Clock,
   CheckCircle,
   AlertCircle,
+  Settings // Added Settings icon
 } from 'lucide-react';
 
 export default function StaffDashboardPage() {
@@ -93,6 +94,13 @@ export default function StaffDashboardPage() {
       icon: FileText,
       description: 'Assist patients with billing and insurance matters.',
       stats: '12 pending bills'
+    },
+    {
+      title: 'Account Settings',
+      href: '/staff/dashboard/settings',
+      icon: Settings,
+      description: 'Manage your profile and contact details.',
+      stats: 'Edit Profile'
     },
   ];
 
