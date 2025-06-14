@@ -123,12 +123,12 @@ export default function PatientRegistrationPage() {
       }
       await registerPatient(formData);
       toast.success(
-        'Registration successful! Please check your email to verify your account.'
+        'Registration successful! Please check your email for the verification code.'
       );
 
       // Add delay to allow user to see the success toast
       setTimeout(() => {
-        router.push('/auth/login');
+        router.push(`/auth/verify-email?email=${encodeURIComponent(data.email)}`);
         setIsSubmitting(false); // Set loading false after navigation
       }, 2500); // 2.5 second delay for registration (longer message)
     } catch (error: any) {

@@ -40,6 +40,16 @@ export default function PatientLoginPage() {
   const router = useRouter();
   const { login, isLoading, error: authError, user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  
+  // Check for verification success
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('verified') === 'true') {
+      toast.success('Email verified successfully! You can now login.');
+      // Remove the query parameter from URL
+      router.replace('/auth/login/patient');
+    }
+  }, [router]);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),

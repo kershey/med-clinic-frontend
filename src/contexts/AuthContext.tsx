@@ -156,6 +156,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         err.response?.data?.detail ||
         err.response?.data?.message ||
         'Login failed. Please check your credentials.';
+      
+      // Check if error is due to pending email verification
+      if (err.response?.status === 403 && 
+          errorMessage.toLowerCase().includes('email verification required')) {
+        toast.info('Please verify your email before logging in.');
+        // Redirect to verification page with email parameter
+        router.push(`/auth/verify-email?email=${encodeURIComponent(payload.email)}`);
+        setIsLoading(false);
+        return; // Don't throw error for verification case
+      }
+      
       toast.error(errorMessage);
       console.error('Login error:', err.response || err);
       setIsLoading(false); // Set loading false on error

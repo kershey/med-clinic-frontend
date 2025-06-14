@@ -27,11 +27,16 @@ const AUTH_BASE_URL = '/auth'; // apiClient already has /api/v1 prefix
  * Registers a new patient.
  */
 export const registerPatient = async (
-  payload: PatientRegistrationPayload
+  payload: FormData
 ): Promise<ApiMessageResponse> => {
   const response = await apiClient.post<ApiMessageResponse>(
     `${AUTH_BASE_URL}/register/patient`,
-    payload
+    payload,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   );
   return response.data;
 };
@@ -40,11 +45,16 @@ export const registerPatient = async (
  * Registers a new doctor (pending admin approval).
  */
 export const registerDoctor = async (
-  payload: DoctorRegistrationPayload
+  payload: FormData
 ): Promise<ApiMessageResponse> => {
   const response = await apiClient.post<ApiMessageResponse>(
     `${AUTH_BASE_URL}/register/doctor`,
-    payload
+    payload,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   );
   return response.data;
 };
@@ -53,11 +63,16 @@ export const registerDoctor = async (
  * Admin self-registration (pending approval by another admin).
  */
 export const registerAdminSelf = async (
-  payload: AdminRegistrationPayload
+  payload: FormData
 ): Promise<ApiMessageResponse> => {
   const response = await apiClient.post<ApiMessageResponse>(
     `${AUTH_BASE_URL}/register/admin`,
-    payload
+    payload,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   );
   return response.data;
 };
@@ -250,11 +265,16 @@ export const checkActivationTokenStatus = async (
  * Admin creates a new staff account.
  */
 export const adminCreateStaff = async (
-  payload: StaffRegistrationByAdminPayload
+  payload: FormData
 ): Promise<ApiMessageResponse> => {
   const response = await apiClient.post<ApiMessageResponse>(
-    `${AUTH_BASE_URL}/admin/create-staff`,
-    payload
+    `${AUTH_BASE_URL}/register/staff`,
+    payload,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   );
   return response.data;
 };
